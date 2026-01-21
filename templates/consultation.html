@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Consultation - Skin Saviour</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/consultation.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="app-logo">🔬</div>
+                    <h1 class="app-name">Skin Saviour</h1>
+                </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <a href="/dashboard" class="back-btn">← Dashboard</a>
+                        <span class="user-name">Welcome, {{ session.username if session.username else 'User' }}</span>
+                        <a href="/logout" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <h2 class="section-title">Doctor Consultation</h2>
+
+            <!-- Consultation Options -->
+            <section class="consultation-options">
+                <div class="option-card" id="book-consultation">
+                    <div class="option-icon">📅</div>
+                    <h3>Book Consultation</h3>
+                    <p>Schedule an appointment with a dermatologist</p>
+                    <button class="option-btn">Book Now</button>
+                </div>
+
+                <div class="option-card" id="video-consultation">
+                    <div class="option-icon">📹</div>
+                    <h3>Video Consultation</h3>
+                    <p>Consult with a doctor online via video call</p>
+                    <button class="option-btn">Start Video Call</button>
+                </div>
+
+                <div class="option-card" id="chat-consultation">
+                    <div class="option-icon">💬</div>
+                    <h3>Chat Consultation</h3>
+                    <p>Get quick advice through text chat</p>
+                    <button class="option-btn">Start Chat</button>
+                </div>
+            </section>
+
+            <!-- Booking Form -->
+            <section class="booking-section hidden" id="booking-section">
+                <h3 class="section-subtitle">Book Your Appointment</h3>
+                <form id="booking-form" class="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="doctor-name">Select Doctor</label>
+                            <select id="doctor-name" name="doctor" required>
+                                <option value="">Choose a doctor...</option>
+                                <option value="dr-smith">Dr. Sarah Smith - Dermatologist</option>
+                                <option value="dr-johnson">Dr. Michael Johnson - Skin Specialist</option>
+                                <option value="dr-williams">Dr. Emily Williams - Dermatology Expert</option>
+                                <option value="dr-brown">Dr. David Brown - Skin Cancer Specialist</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="consultation-type">Consultation Type</label>
+                            <select id="consultation-type" name="type" required>
+                                <option value="in-person">In-Person Visit</option>
+                                <option value="video">Video Consultation</option>
+                                <option value="chat">Chat Consultation</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="appointment-date">Preferred Date</label>
+                            <input type="date" id="appointment-date" name="date" required min="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="appointment-time">Preferred Time</label>
+                            <select id="appointment-time" name="time" required>
+                                <option value="">Select time...</option>
+                                <option value="09:00">9:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="14:00">2:00 PM</option>
+                                <option value="15:00">3:00 PM</option>
+                                <option value="16:00">4:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason">Reason for Consultation</label>
+                        <textarea id="reason" name="reason" rows="4" placeholder="Describe your concern or attach scan results..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Contact Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Book Appointment</button>
+                </form>
+            </section>
+
+            <!-- Upcoming Appointments -->
+            <section class="appointments-section">
+                <h3 class="section-subtitle">Upcoming Appointments</h3>
+                <div class="appointments-list" id="appointments-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <p>No upcoming appointments</p>
+                        <p class="empty-subtitle">Book your first consultation above</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Skin Saviour - Academic Demonstration Project</p>
+            <p class="footer-note">For educational purposes only. Not for medical use.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/consultation.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+

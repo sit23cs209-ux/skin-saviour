@@ -1,0 +1,643 @@
+/* Skin Saviour - Modern UI Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.8s ease-in;
+}
+
+.welcome-content {
+    text-align: center;
+    color: white;
+    padding: 40px;
+    animation: slideUp 1s ease-out;
+}
+
+.app-logo {
+    font-size: 6em;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.app-name {
+    font-size: 4.5em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+}
+
+.app-tagline {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+.app-description {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    opacity: 0.85;
+    font-style: italic;
+}
+
+.btn-welcome {
+    background: white;
+    color: #667eea;
+    padding: 15px 50px;
+    font-size: 1.3em;
+    font-weight: bold;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.btn-welcome:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    background: #f0f0f0;
+}
+
+.welcome-screen.hidden {
+    display: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Header */
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Card Styles */
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card h2 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.instruction {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1em;
+}
+
+/* Upload Area */
+.upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    background: #f8f9ff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: #764ba2;
+    background: #f0f2ff;
+}
+
+.upload-area.dragover {
+    border-color: #764ba2;
+    background: #e8ebff;
+    transform: scale(1.02);
+}
+
+#image-input {
+    display: none;
+}
+
+.upload-label {
+    cursor: pointer;
+    display: block;
+}
+
+.upload-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.upload-text {
+    color: #667eea;
+    font-size: 1.1em;
+}
+
+.upload-text span {
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* Image Preview */
+.image-preview {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#loading-section {
+    text-align: center;
+    color: #667eea;
+    font-weight: 600;
+}
+
+/* Results */
+.result-box {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.result-cancer {
+    background: #fff3cd;
+    border-left: 5px solid #ffc107;
+}
+
+.result-no-cancer {
+    background: #d1ecf1;
+    border-left: 5px solid #17a2b8;
+}
+
+.result-clear-skin {
+    background: #d4edda;
+    border-left: 5px solid #28a745;
+}
+
+.clear-skin-notice {
+    background: #e7f3ff;
+    border-left: 4px solid #0066cc;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    color: #004085;
+}
+
+.clear-skin-notice strong {
+    color: #0066cc;
+}
+
+.pimple-notice {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    color: #155724;
+    line-height: 1.6;
+}
+
+.pimple-notice strong {
+    color: #155724;
+}
+
+.pimple-notice em {
+    color: #0c5460;
+    font-size: 0.95em;
+}
+
+.cancer-detected-notice {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    color: #856404;
+    line-height: 1.6;
+}
+
+.cancer-detected-notice strong {
+    color: #856404;
+}
+
+.result-title {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.result-title .icon {
+    font-size: 1.2em;
+}
+
+.confidence-score {
+    font-size: 2em;
+    font-weight: bold;
+    color: #667eea;
+    margin: 15px 0;
+}
+
+/* Percentage Display - Shows actual cancer percentage from CNN */
+.percentage-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 25px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    gap: 20px;
+}
+
+.percentage-main {
+    text-align: center;
+    flex: 1;
+}
+
+.percentage-value {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.cancer-percentage {
+    color: #dc3545;
+}
+
+.non-cancer-percentage {
+    color: #28a745;
+}
+
+.percentage-label {
+    font-size: 1em;
+    color: #666;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.percentage-separator {
+    font-size: 1.2em;
+    color: #999;
+    font-weight: 600;
+}
+
+.prediction-details {
+    margin-top: 20px;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.prediction-details p {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+}
+
+.risk-level {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.risk-high {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.risk-moderate {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.risk-low {
+    background: #d4edda;
+    color: #155724;
+}
+
+.risk-very-low {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.risk-minimal {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Disclaimer */
+.disclaimer {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.disclaimer strong {
+    color: #856404;
+}
+
+.disclaimer p {
+    margin-top: 10px;
+    color: #856404;
+    line-height: 1.6;
+}
+
+/* Recommendations */
+.recommendations {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.recommendations h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.recommendations ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.recommendations li {
+    padding: 10px 0;
+    padding-left: 30px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.recommendations li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.recommendations .btn {
+    margin-top: 15px;
+    background: #28a745;
+    color: white;
+}
+
+.recommendations .btn:hover {
+    background: #218838;
+}
+
+/* Error Card */
+.error-card {
+    background: #f8d7da;
+    border-left: 5px solid #dc3545;
+}
+
+.error-card h2 {
+    color: #721c24;
+}
+
+#error-message {
+    color: #721c24;
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    opacity: 0.8;
+}
+
+.footer-note {
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+    
+    .upload-area {
+        padding: 30px 20px;
+    }
+    
+    .percentage-display {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .percentage-value {
+        font-size: 2.5em;
+    }
+    
+    .percentage-separator {
+        font-size: 1em;
+    }
+    
+    .app-name {
+        font-size: 3em;
+    }
+    
+    .app-tagline {
+        font-size: 1.4em;
+    }
+    
+    .app-logo {
+        font-size: 4em;
+    }
+    
+    .btn-welcome {
+        padding: 12px 40px;
+        font-size: 1.1em;
+    }
+    
+    .app-name {
+        font-size: 3em;
+    }
+    
+    .app-tagline {
+        font-size: 1.4em;
+    }
+    
+    .app-logo {
+        font-size: 4em;
+    }
+    
+    .btn-welcome {
+        padding: 12px 40px;
+        font-size: 1.1em;
+    }
+}
+

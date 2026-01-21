@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Skin Saviour</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="app-logo">🔬</div>
+                    <h1 class="app-name">Skin Saviour</h1>
+                </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <span class="user-name">Welcome, {{ session.username if session.username else 'User' }}</span>
+                        <a href="/logout" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- Quick Actions Section -->
+            <section class="quick-actions">
+                <h2 class="section-title">Quick Actions</h2>
+                <div class="action-cards">
+                    <div class="action-card primary-card" id="scan-card">
+                        <div class="card-icon">📷</div>
+                        <h3>Scan Image</h3>
+                        <p>Upload and analyze a skin lesion image</p>
+                        <button class="action-btn">Start Scan</button>
+                    </div>
+                    
+                    <div class="action-card" id="history-card">
+                        <div class="card-icon">📋</div>
+                        <h3>Scan History</h3>
+                        <p>View your previous scan results</p>
+                        <button class="action-btn secondary">View History</button>
+                    </div>
+                    
+                    <div class="action-card" id="doctor-card">
+                        <div class="card-icon">👨‍⚕️</div>
+                        <h3>Doctor Consultation</h3>
+                        <p>Book or schedule a consultation</p>
+                        <button class="action-btn secondary">Consult Doctor</button>
+                    </div>
+                    
+                    <div class="action-card" id="nearby-doctors-card">
+                        <div class="card-icon">📍</div>
+                        <h3>Nearby Doctors</h3>
+                        <p>Find dermatologists near you</p>
+                        <button class="action-btn secondary">Find Doctors</button>
+                    </div>
+                    
+                    <div class="action-card" id="tracking-card">
+                        <div class="card-icon">💊</div>
+                        <h3>Track Consultations</h3>
+                        <p>Manage appointments & medications</p>
+                        <button class="action-btn secondary">View Tracking</button>
+                    </div>
+                    
+                    <div class="action-card" id="info-card">
+                        <div class="card-icon">ℹ️</div>
+                        <h3>Information</h3>
+                        <p>Learn about skin cancer detection</p>
+                        <button class="action-btn secondary">Learn More</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="statistics-section">
+                <h2 class="section-title">Your Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-scans">0</div>
+                        <div class="stat-label">Total Scans</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="low-risk-count">0</div>
+                        <div class="stat-label">Low Risk</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="moderate-risk-count">0</div>
+                        <div class="stat-label">Moderate Risk</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="high-risk-count">0</div>
+                        <div class="stat-label">High Risk</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Scans Section -->
+            <section class="recent-scans">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Scans</h2>
+                    <button class="view-all-btn" id="view-all-btn">View All</button>
+                </div>
+                <div class="scans-list" id="scans-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <p>No scans yet. Start your first scan!</p>
+                        <button class="action-btn" onclick="document.getElementById('scan-card').click()">Scan Now</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tips Section -->
+            <section class="tips-section">
+                <h2 class="section-title">Health Tips</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">☀️</div>
+                        <h4>Sun Protection</h4>
+                        <p>Use sunscreen with SPF 30+ and avoid peak sun hours</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔍</div>
+                        <h4>Regular Checks</h4>
+                        <p>Perform monthly self-examinations of your skin</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">👨‍⚕️</div>
+                        <h4>Professional Help</h4>
+                        <p>Consult a dermatologist for annual skin exams</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">📸</div>
+                        <h4>Photo Documentation</h4>
+                        <p>Take photos to track changes over time</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Skin Saviour - Academic Demonstration Project</p>
+            <p class="footer-note">For educational purposes only. Not for medical use.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
+

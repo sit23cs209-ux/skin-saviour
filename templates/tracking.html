@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Consultations & Medications - Skin Saviour</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tracking.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="app-logo">🔬</div>
+                    <h1 class="app-name">Skin Saviour</h1>
+                </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <a href="/dashboard" class="back-btn">← Dashboard</a>
+                        <span class="user-name">Welcome, {{ session.username if session.username else 'User' }}</span>
+                        <a href="/logout" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="tracking-header">
+                <h2 class="section-title">Track Consultations & Medications</h2>
+                <button class="btn-add" id="add-consultation-btn">+ Add Consultation</button>
+                <button class="btn-add" id="add-medication-btn">+ Add Medication</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="consultations">Consultations</button>
+                <button class="tab-btn" data-tab="medications">Medications</button>
+                <button class="tab-btn" data-tab="reminders">Reminders</button>
+            </div>
+
+            <!-- Consultations Tab -->
+            <div class="tab-content active" id="consultations-tab">
+                <div class="consultations-list" id="consultations-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📋</div>
+                        <p>No consultations tracked yet</p>
+                        <button class="action-btn" onclick="document.getElementById('add-consultation-btn').click()">Add First Consultation</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medications Tab -->
+            <div class="tab-content" id="medications-tab">
+                <div class="medications-list" id="medications-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">💊</div>
+                        <p>No medications tracked yet</p>
+                        <button class="action-btn" onclick="document.getElementById('add-medication-btn').click()">Add First Medication</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reminders Tab -->
+            <div class="tab-content" id="reminders-tab">
+                <div class="reminders-list" id="reminders-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">⏰</div>
+                        <p>No reminders set</p>
+                        <p class="empty-subtitle">Set reminders for medications and appointments</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Skin Saviour - Academic Demonstration Project</p>
+            <p class="footer-note">For educational purposes only. Not for medical use.</p>
+        </footer>
+    </div>
+
+    <!-- Add Consultation Modal -->
+    <div class="modal hidden" id="consultation-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-consultation-modal">&times;</span>
+            <h3>Add Consultation</h3>
+            <form id="consultation-form">
+                <div class="form-group">
+                    <label>Doctor Name</label>
+                    <input type="text" id="consult-doctor" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="consult-date" required>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="consult-notes" rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Medication Modal -->
+    <div class="modal hidden" id="medication-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-medication-modal">&times;</span>
+            <h3>Add Medication</h3>
+            <form id="medication-form">
+                <div class="form-group">
+                    <label>Medication Name</label>
+                    <input type="text" id="med-name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Dosage</label>
+                        <input type="text" id="med-dosage" placeholder="e.g., 10mg" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="med-frequency" required>
+                            <option value="once-daily">Once Daily</option>
+                            <option value="twice-daily">Twice Daily</option>
+                            <option value="thrice-daily">Three Times Daily</option>
+                            <option value="as-needed">As Needed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="med-start" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="med-end">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="med-notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/tracking.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+

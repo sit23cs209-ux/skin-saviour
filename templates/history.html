@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan History - Skin Saviour</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="app-logo">🔬</div>
+                    <h1 class="app-name">Skin Saviour</h1>
+                </div>
+                <div class="user-section">
+                    <div class="user-info">
+                        <a href="/dashboard" class="back-btn">← Dashboard</a>
+                        <span class="user-name">Welcome, {{ session.username if session.username else 'User' }}</span>
+                        <a href="/logout" class="logout-btn">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="history-header">
+                <h2 class="section-title">Scan History</h2>
+                <div class="history-actions">
+                    <button class="btn-filter" id="filter-btn">Filter</button>
+                    <button class="btn-clear" id="clear-history-btn">Clear History</button>
+                </div>
+            </div>
+
+            <!-- Filter Options -->
+            <div class="filter-section hidden" id="filter-section">
+                <div class="filter-options">
+                    <label>
+                        <input type="checkbox" id="filter-high" value="High"> High Risk
+                    </label>
+                    <label>
+                        <input type="checkbox" id="filter-moderate" value="Moderate"> Moderate Risk
+                    </label>
+                    <label>
+                        <input type="checkbox" id="filter-low" value="Low"> Low Risk
+                    </label>
+                    <label>
+                        <input type="checkbox" id="filter-very-low" value="Very Low"> Very Low Risk
+                    </label>
+                    <button class="btn-apply" id="apply-filter-btn">Apply Filter</button>
+                    <button class="btn-reset" id="reset-filter-btn">Reset</button>
+                </div>
+            </div>
+
+            <!-- Statistics Summary -->
+            <div class="history-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="total-history-scans">0</span>
+                    <span class="stat-text">Total Scans</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="filtered-count">0</span>
+                    <span class="stat-text">Showing</span>
+                </div>
+            </div>
+
+            <!-- Scans List -->
+            <div class="scans-container" id="scans-container">
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+                    <p>No scan history available</p>
+                    <p class="empty-subtitle">Start scanning images to build your history</p>
+                    <a href="/scan" class="action-btn">Start Your First Scan</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>Skin Saviour - Academic Demonstration Project</p>
+            <p class="footer-note">For educational purposes only. Not for medical use.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+</body>
+</html>
+
