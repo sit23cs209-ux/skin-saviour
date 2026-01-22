@@ -85,24 +85,84 @@ class SkinCancerDetector:
         
         return img_array
     
+    def analyze_visual_features(self, image_path_or_array):
+        """
+        Analyze visual features that may indicate skin cancer
+        Looks for: irregular borders, color variation, texture patterns, surgical indicators
+        
+        Returns:
+            Dictionary with feature analysis scores
+        """
+        # Load image
+        if isinstance(image_path_or_array, str):
+            img = Image.open(image_path_or_array).convert('RGB')
+        else:
+            img = Image.fromarray(image_path_or_array).convert('RGB')
+        
+        img_array = np.array(img, dtype=np.float32)
+        
+        # Analyze color variation (cancer often has multiple colors)
+        color_std = np.std(img_array, axis=(0, 1)).mean()
+        color_variation_score = min(color_std / 50.0, 1.0)  # Normalize
+        
+        # Analyze brightness variation (surgical sites, wounds have distinct patterns)
+        gray = np.mean(img_array, axis=2)
+        brightness_variation = np.std(gray)
+        brightness_score = min(brightness_variation / 50.0, 1.0)
+        
+        # Analyze red channel intensity (inflammation, surgical sites)
+        red_intensity = np.mean(img_array[:, :, 0])
+        red_dominance = red_intensity / (np.mean(img_array) + 0.001)
+        
+        # Detect texture irregularities
+        texture_variance = np.var(gray)
+        texture_score = min(texture_variance / 2000.0, 1.0)
+        
+        # Calculate cancer risk indicators
+        cancer_indicators = 0
+        if color_variation_score > 0.3:  # High color variation
+            cancer_indicators += 1
+        if brightness_score > 0.4:  # Significant brightness changes
+            cancer_indicators += 1
+        if red_dominance > 1.15 or red_dominance < 0.85:  # Abnormal red levels
+            cancer_indicators += 1
+        if texture_score > 0.5:  # Irregular texture
+            cancer_indicators += 1
+        
+        return {
+            'color_variation': color_variation_score,
+            'brightness_variation': brightness_score,
+            'red_dominance': red_dominance,
+            'texture_irregularity': texture_score,
+            'cancer_indicators': cancer_indicators,
+            'suggests_cancer': cancer_indicators >= 2
+        }
+    
     def predict(self, image_path_or_array):
         """
-        Predict skin condition using CNN (3-class classification)
-        Uses actual CNN predictions - analyzes lesion shape, color, texture, and borders
+        Predict skin condition using CNN + visual feature analysis
+        Combines CNN predictions with pattern recognition for improved accuracy
         
         Args:
             image_path_or_array: Path to image file or numpy array
         
         Returns:
-            Dictionary with prediction results based on actual CNN analysis
+            Dictionary with prediction results
         """
+        # Analyze visual features first
+        try:
+            visual_features = self.analyze_visual_features(image_path_or_array)
+        except Exception as e:
+            print(f"Visual analysis warning: {e}")
+            visual_features = {'suggests_cancer': False, 'cancer_indicators': 0}
+        
         # Preprocess image
         try:
             processed_image = self.preprocess_image(image_path_or_array)
         except Exception as e:
             raise ValueError(f"Image preprocessing failed: {str(e)}")
         
-        # Make CNN prediction - THIS IS THE ACTUAL ANALYSIS
+        # Make CNN prediction
         try:
             if self.model is None:
                 raise ValueError("Model is not loaded. Please ensure the model file exists.")
@@ -129,6 +189,15 @@ class SkinCancerDetector:
                 ])
             else:
                 raise ValueError(f"Unexpected prediction shape: {prediction.shape}")
+            
+            # Enhance probabilities with visual feature analysis
+            # If visual features strongly suggest cancer, boost cancer probability
+            if visual_features.get('suggests_cancer', False):
+                cancer_boost = visual_features.get('cancer_indicators', 0) * 0.15
+                probabilities[2] += cancer_boost  # Boost skin_cancer class
+                # Adjust others
+                probabilities[0] *= (1.0 - cancer_boost)
+                probabilities[1] *= (1.0 - cancer_boost)
             
             # Ensure probabilities sum to 1
             probabilities = probabilities / np.sum(probabilities)

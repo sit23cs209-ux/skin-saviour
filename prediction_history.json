@@ -40,5 +40,67 @@
         "Image resolution (300x168) is below recommended minimum (224x224)"
       ]
     }
+  },
+  {
+    "prediction_id": "pred_3_20260122225203",
+    "user_id": "kaushi",
+    "timestamp": "2026-01-22T22:52:03.960377",
+    "image_filename": "cancer_image.jpeg",
+    "condition": "Normal / Non-Cancerous Skin",
+    "confidence": 66.62,
+    "risk_level": "Low",
+    "is_cancerous": false,
+    "probabilities": {
+      "normal": 66.62,
+      "pimples": 4.42,
+      "skin_cancer": 28.95
+    },
+    "metadata": {
+      "original_filename": "cancer image.jpeg",
+      "file_size": 0,
+      "validation_warnings": []
+    }
+  },
+  {
+    "prediction_id": "pred_4_20260122225226",
+    "user_id": "kaushi",
+    "timestamp": "2026-01-22T22:52:26.478334",
+    "image_filename": "PIMPLES.jpeg",
+    "condition": "Normal / Non-Cancerous Skin",
+    "confidence": 69.12,
+    "risk_level": "Low",
+    "is_cancerous": false,
+    "probabilities": {
+      "normal": 69.12,
+      "pimples": 10.6,
+      "skin_cancer": 20.29
+    },
+    "metadata": {
+      "original_filename": "PIMPLES.jpeg",
+      "file_size": 0,
+      "validation_warnings": []
+    }
+  },
+  {
+    "prediction_id": "pred_5_20260122225250",
+    "user_id": "kaushi",
+    "timestamp": "2026-01-22T22:52:50.023065",
+    "image_filename": "acne.jpeg",
+    "condition": "Normal / Non-Cancerous Skin",
+    "confidence": 58.12,
+    "risk_level": "Low",
+    "is_cancerous": false,
+    "probabilities": {
+      "normal": 58.12,
+      "pimples": 2.52,
+      "skin_cancer": 39.36
+    },
+    "metadata": {
+      "original_filename": "acne.jpeg",
+      "file_size": 0,
+      "validation_warnings": [
+        "Image resolution (275x183) is below recommended minimum (224x224)"
+      ]
+    }
   }
 ]
