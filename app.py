@@ -34,6 +34,8 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # User storage file (simple file-based storage for demo)
 USERS_FILE = 'users.json'
+HISTORY_FILE = 'prediction_history.json'
+KNOWLEDGE_FILE = 'medical_knowledge.json'
 
 # Initialize detector
 detector = SkinCancerDetector()
@@ -53,6 +55,87 @@ def save_users(users):
     """Save users to file"""
     with open(USERS_FILE, 'w') as f:
         json.dump(users, f, indent=2)
+
+def load_prediction_history():
+    """Load prediction history from file"""
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            return []
+    return []
+
+def save_prediction_history(history):
+    """Save prediction history to file"""
+    with open(HISTORY_FILE, 'w') as f:
+        json.dump(history, f, indent=2)
+
+def add_prediction_to_history(user_id, image_filename, prediction_result, image_metadata=None):
+    """Add a new prediction to history"""
+    from datetime import datetime
+    
+    history = load_prediction_history()
+    
+    prediction_entry = {
+        'prediction_id': f"pred_{len(history) + 1}_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+        'user_id': user_id,
+        'timestamp': datetime.now().isoformat(),
+        'image_filename': image_filename,
+        'condition': prediction_result.get('condition'),
+        'confidence': prediction_result.get('confidence'),
+        'risk_level': prediction_result.get('risk_level'),
+        'is_cancerous': prediction_result.get('is_cancerous'),
+        'probabilities': prediction_result.get('probabilities'),
+        'metadata': image_metadata or {}
+    }
+    
+    history.append(prediction_entry)
+    save_prediction_history(history)
+    
+    return prediction_entry['prediction_id']
+
+def get_analytics_summary(user_id=None):
+    """Generate analytics summary from prediction history"""
+    history = load_prediction_history()
+    
+    if user_id:
+        history = [p for p in history if p.get('user_id') == user_id]
+    
+    if not history:
+        return {
+            'total_predictions': 0,
+            'high_risk_count': 0,
+            'medium_risk_count': 0,
+            'low_risk_count': 0,
+            'condition_distribution': {},
+            'recent_predictions': []
+        }
+    
+    analytics = {
+        'total_predictions': len(history),
+        'high_risk_count': sum(1 for p in history if p.get('risk_level') == 'High'),
+        'medium_risk_count': sum(1 for p in history if p.get('risk_level') == 'Medium'),
+        'low_risk_count': sum(1 for p in history if p.get('risk_level') == 'Low'),
+        'condition_distribution': {},
+        'recent_predictions': sorted(history, key=lambda x: x.get('timestamp', ''), reverse=True)[:5]
+    }
+    
+    for prediction in history:
+        condition = prediction.get('condition', 'Unknown')
+        analytics['condition_distribution'][condition] = analytics['condition_distribution'].get(condition, 0) + 1
+    
+    return analytics
+
+def load_medical_knowledge():
+    """Load medical knowledge base"""
+    if os.path.exists(KNOWLEDGE_FILE):
+        try:
+            with open(KNOWLEDGE_FILE, 'r') as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
 
 def init_default_user():
     """Initialize default user for demo"""
@@ -344,6 +427,26 @@ def predict():
         
         # Add medical disclaimer
         prediction_result['disclaimer'] = 'This is an AI-based preliminary analysis and not a medical diagnosis.'
+        
+        # Store prediction in history
+        user_id = session.get('user_id', 'guest')
+        image_metadata = {
+            'original_filename': file.filename,
+            'file_size': len(file.read()),
+            'validation_warnings': validation_result.get('warnings', [])
+        }
+        file.seek(0)  # Reset file pointer after reading size
+        
+        try:
+            prediction_id = add_prediction_to_history(
+                user_id=user_id,
+                image_filename=filename,
+                prediction_result=prediction_result,
+                image_metadata=image_metadata
+            )
+            prediction_result['prediction_id'] = prediction_id
+        except Exception as storage_error:
+            print(f"Warning: Failed to store prediction history: {storage_error}")
         
         # Clean up uploaded file
         os.remove(filepath)
@@ -669,6 +772,136 @@ def medication_guidance():
         'condition': condition,
         'guidance': guidance_data[condition]
     }), 200
+
+@app.route('/api/prediction-history', methods=['GET'])
+def get_prediction_history():
+    """Get prediction history for the current user"""
+    try:
+        user_id = session.get('user_id', 'guest')
+        history = load_prediction_history()
+        
+        # Filter by user
+        user_history = [p for p in history if p.get('user_id') == user_id]
+        
+        # Sort by timestamp (newest first)
+        user_history = sorted(user_history, key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return jsonify({
+            'success': True,
+            'count': len(user_history),
+            'predictions': user_history
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/analytics', methods=['GET'])
+def get_analytics():
+    """Get analytics summary for the current user"""
+    try:
+        user_id = session.get('user_id', 'guest')
+        analytics = get_analytics_summary(user_id)
+        
+        return jsonify({
+            'success': True,
+            'analytics': analytics
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/condition-info/<condition>', methods=['GET'])
+def get_condition_info(condition):
+    """Get detailed medical information about a condition"""
+    try:
+        knowledge = load_medical_knowledge()
+        conditions = knowledge.get('conditions', {})
+        
+        condition_lower = condition.lower().replace(' ', '_')
+        
+        if condition_lower not in conditions:
+            return jsonify({
+                'success': False,
+                'error': 'Condition not found',
+                'available_conditions': list(conditions.keys())
+            }), 404
+        
+        return jsonify({
+            'success': True,
+            'condition': condition_lower,
+            'information': conditions[condition_lower]
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/prediction/<prediction_id>', methods=['GET'])
+def get_prediction_detail(prediction_id):
+    """Get details of a specific prediction"""
+    try:
+        history = load_prediction_history()
+        
+        prediction = next((p for p in history if p.get('prediction_id') == prediction_id), None)
+        
+        if not prediction:
+            return jsonify({
+                'success': False,
+                'error': 'Prediction not found'
+            }), 404
+        
+        # Check if user has access to this prediction
+        user_id = session.get('user_id', 'guest')
+        if prediction.get('user_id') != user_id:
+            return jsonify({
+                'success': False,
+                'error': 'Access denied'
+            }), 403
+        
+        return jsonify({
+            'success': True,
+            'prediction': prediction
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/dashboard-stats', methods=['GET'])
+def get_dashboard_stats():
+    """Get comprehensive dashboard statistics"""
+    try:
+        user_id = session.get('user_id', 'guest')
+        analytics = get_analytics_summary(user_id)
+        
+        # Calculate additional statistics
+        history = load_prediction_history()
+        user_history = [p for p in history if p.get('user_id') == user_id]
+        
+        stats = {
+            'total_scans': analytics['total_predictions'],
+            'high_risk_count': analytics['high_risk_count'],
+            'medium_risk_count': analytics['medium_risk_count'],
+            'low_risk_count': analytics['low_risk_count'],
+            'condition_distribution': analytics['condition_distribution'],
+            'recent_scans': analytics['recent_predictions'][:10]
+        }
+        
+        return jsonify({
+            'success': True,
+            'stats': stats
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     print("Starting Skin Saviour API...")

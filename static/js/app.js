@@ -279,9 +279,70 @@ function displayResults(prediction) {
     // Save scan to history
     saveScanToHistory(prediction);
     
+    // Fetch and display condition information
+    fetchConditionInfo(prediction.condition);
+    
     // Show results section
     resultsSection.classList.remove('hidden');
     loadingSection.classList.add('hidden');
+}
+
+// Fetch condition information from medical knowledge base
+async function fetchConditionInfo(condition) {
+    try {
+        const conditionKey = condition.toLowerCase().replace(/ /g, '_');
+        const response = await fetch(`/api/condition-info/${conditionKey}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            displayConditionInfo(data.information);
+        } else {
+            console.error('Failed to fetch condition info:', data.error);
+        }
+    } catch (error) {
+        console.error('Error fetching condition info:', error);
+    }
+}
+
+// Display condition information
+function displayConditionInfo(info) {
+    const infoContainer = document.getElementById('condition-info-container');
+    
+    if (!infoContainer) {
+        // Create container if it doesn't exist
+        const resultsSection = document.getElementById('results');
+        const container = document.createElement('div');
+        container.id = 'condition-info-container';
+        container.className = 'condition-info';
+        container.style.marginTop = '20px';
+        container.style.padding = '20px';
+        container.style.backgroundColor = '#f8f9fa';
+        container.style.borderRadius = '8px';
+        resultsSection.appendChild(container);
+        return displayConditionInfo(info); // Retry with created container
+    }
+    
+    let html = `<h3>📋 Condition Information</h3>`;
+    html += `<p><strong>${info.name}</strong> - ${info.severity || 'N/A'}</p>`;
+    html += `<p>${info.description}</p>`;
+    
+    if (info.immediate_actions && info.immediate_actions.length > 0) {
+        html += `<h4>⚡ Immediate Actions:</h4><ul>`;
+        info.immediate_actions.forEach(action => {
+            html += `<li>${action}</li>`;
+        });
+        html += `</ul>`;
+    }
+    
+    if (info.prevention && info.prevention.length > 0) {
+        html += `<h4>🛡️ Prevention Tips:</h4><ul>`;
+        info.prevention.forEach(tip => {
+            html += `<li>${tip}</li>`;
+        });
+        html += `</ul>`;
+    }
+    
+    infoContainer.innerHTML = html;
 }
 
 // Save scan results to localStorage for dashboard

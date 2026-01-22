@@ -1,0 +1,148 @@
+{
+  "conditions": {
+    "skin_cancer": {
+      "name": "Skin Cancer",
+      "severity": "Critical",
+      "description": "Abnormal growth of skin cells, most often developed on skin exposed to the sun. Early detection is crucial for successful treatment.",
+      "types": [
+        "Melanoma (most dangerous)",
+        "Basal Cell Carcinoma",
+        "Squamous Cell Carcinoma"
+      ],
+      "symptoms": [
+        "New, unusual growth or sore that doesn't heal",
+        "Change in existing mole (size, color, shape)",
+        "Spot that looks different from others",
+        "Bleeding or oozing from skin lesion"
+      ],
+      "risk_factors": [
+        "Excessive UV exposure",
+        "Fair skin",
+        "Family history",
+        "Weakened immune system",
+        "Age over 50"
+      ],
+      "immediate_actions": [
+        "Schedule appointment with dermatologist within 1-2 weeks",
+        "Document lesion with photos for tracking",
+        "Avoid further sun exposure to affected area",
+        "Do not attempt self-removal"
+      ],
+      "prevention": [
+        "Use SPF 30+ sunscreen daily",
+        "Wear protective clothing",
+        "Avoid peak sun hours (10 AM - 4 PM)",
+        "Regular skin self-examinations",
+        "Annual dermatologist check-ups"
+      ],
+      "treatment_overview": "Treatment depends on type, size, and stage. Options include surgical excision, Mohs surgery, radiation, chemotherapy, or immunotherapy.",
+      "prognosis": "When detected early, most skin cancers are highly treatable with 5-year survival rates >90% for localized cases.",
+      "references": [
+        "American Academy of Dermatology",
+        "National Cancer Institute",
+        "Skin Cancer Foundation"
+      ]
+    },
+    "pimples": {
+      "name": "Acne / Pimples",
+      "severity": "Mild to Moderate",
+      "description": "Common skin condition caused by clogged hair follicles, bacteria, and inflammation. Typically affects face, chest, back, and shoulders.",
+      "types": [
+        "Whiteheads (closed comedones)",
+        "Blackheads (open comedones)",
+        "Papules (small red bumps)",
+        "Pustules (pimples with pus)",
+        "Cystic acne (severe, painful)"
+      ],
+      "symptoms": [
+        "Visible bumps or lesions on skin",
+        "Redness and inflammation",
+        "Occasional pain or tenderness",
+        "Possible scarring if severe"
+      ],
+      "risk_factors": [
+        "Hormonal changes (puberty, menstruation)",
+        "Genetics",
+        "Stress",
+        "Certain medications",
+        "Diet (dairy, high glycemic foods)"
+      ],
+      "immediate_actions": [
+        "Keep affected area clean with gentle cleanser",
+        "Avoid touching or picking at pimples",
+        "Use non-comedogenic skincare products",
+        "Consider over-the-counter benzoyl peroxide or salicylic acid"
+      ],
+      "prevention": [
+        "Wash face twice daily with mild cleanser",
+        "Remove makeup before bed",
+        "Avoid oily hair products",
+        "Shower after sweating",
+        "Don't squeeze or pick at acne"
+      ],
+      "treatment_overview": "Topical treatments (retinoids, benzoyl peroxide, antibiotics), oral medications (antibiotics, hormonal therapy, isotretinoin for severe cases), and procedural treatments (chemical peels, laser therapy).",
+      "prognosis": "Most acne improves with treatment. Scarring can occur with severe cases or improper handling. Consult dermatologist for persistent cases.",
+      "references": [
+        "American Academy of Dermatology",
+        "Mayo Clinic",
+        "NIH - National Institute of Arthritis and Musculoskeletal and Skin Diseases"
+      ]
+    },
+    "normal": {
+      "name": "Normal / Healthy Skin",
+      "severity": "None",
+      "description": "No concerning lesions or abnormalities detected. Skin appears healthy with normal characteristics.",
+      "symptoms": [
+        "Even skin tone",
+        "No unusual growths",
+        "No signs of infection or inflammation",
+        "Healthy texture and appearance"
+      ],
+      "maintenance_tips": [
+        "Continue regular skin self-examinations",
+        "Use daily sunscreen (SPF 30+)",
+        "Maintain healthy hydration",
+        "Follow balanced diet rich in antioxidants",
+        "Get adequate sleep (7-9 hours)"
+      ],
+      "preventive_care": [
+        "Annual dermatologist check-up recommended",
+        "Monitor for any new or changing spots",
+        "Protect skin from UV damage",
+        "Avoid smoking and excessive alcohol",
+        "Manage stress levels"
+      ],
+      "when_to_see_doctor": [
+        "New growth or mole appears",
+        "Existing mole changes size, color, or shape",
+        "Sore that doesn't heal within 3 weeks",
+        "Persistent itching or bleeding",
+        "Family history of skin cancer"
+      ],
+      "references": [
+        "American Academy of Dermatology",
+        "Centers for Disease Control and Prevention (CDC)"
+      ]
+    }
+  },
+  "specialist_types": {
+    "dermatologist": {
+      "specialty": "Dermatology",
+      "description": "Medical doctors specialized in diagnosing and treating skin, hair, and nail conditions",
+      "qualifications": "MD or DO + 3-4 years dermatology residency",
+      "when_to_consult": "Any suspicious skin changes, persistent skin conditions, cosmetic concerns"
+    },
+    "surgical_oncologist": {
+      "specialty": "Surgical Oncology",
+      "description": "Surgeons specialized in cancer diagnosis and surgical treatment",
+      "qualifications": "MD + General Surgery Residency + Surgical Oncology Fellowship",
+      "when_to_consult": "Confirmed or suspected cancer diagnosis requiring surgical intervention"
+    },
+    "radiation_oncologist": {
+      "specialty": "Radiation Oncology",
+      "description": "Physicians specialized in treating cancer with radiation therapy",
+      "qualifications": "MD + Radiation Oncology Residency",
+      "when_to_consult": "Cancer treatment plan includes radiation therapy"
+    }
+  }
+}

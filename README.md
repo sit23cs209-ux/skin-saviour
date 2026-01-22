@@ -17,7 +17,10 @@ A cutting-edge web application leveraging deep learning and computer vision to d
 - **✅ Image Quality Validation**: Pre-processing with blur detection, brightness check, and resolution validation
 - **🌐 Web Interface**: Modern, responsive UI with drag-and-drop image upload
 - **👤 User Authentication**: Secure login/registration system with session management
-- **📊 Dashboard Analytics**: Track scan history and risk assessments
+- **📊 Dashboard Analytics**: Real-time analytics with prediction history and condition distribution charts
+- **💾 Prediction History**: Automatic storage of all scan results with timestamps and metadata
+- **📚 Medical Knowledge Base**: Comprehensive condition information with symptoms, prevention, and treatment
+- **📈 Data Visualization**: Interactive charts showing condition distribution and risk analysis
 - **🏥 Healthcare Integration**: GPS-based nearby doctor search and online consultation
 - **📱 Mobile Ready**: Flutter mobile app included for cross-platform support
 - **🔒 Privacy Focused**: Local processing with temporary file handling
@@ -27,8 +30,9 @@ A cutting-edge web application leveraging deep learning and computer vision to d
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
 - **Deep Learning**: CNN with MobileNetV2/EfficientNet transfer learning
 - **Mobile**: Flutter 3.0+ (Android/iOS)
-- **Database**: JSON-based user storage (scalable to SQL)
+- **Data Storage**: JSON-based storage (users.json, prediction_history.json, medical_knowledge.json)
 - **Image Processing**: PIL, OpenCV, NumPy
+- **API Architecture**: RESTful API with 13+ endpoints
 
 ## 🎯 Use Cases
 
@@ -79,6 +83,15 @@ A: No, this is an academic demonstration project. The application includes discl
 **Q: How accurate is the model?**
 A: Model accuracy depends on the training dataset quality and size. With proper training on validated medical datasets, CNN models can achieve 85-95% accuracy in multi-class skin condition classification.
 
+**Q: How does the prediction history system work?**
+A: After each prediction, the system automatically stores the results in prediction_history.json with timestamp, user ID, condition, confidence, risk level, and metadata. The dashboard fetches this data to display real-time analytics.
+
+**Q: What is the medical knowledge base?**
+A: We maintain medical_knowledge.json containing comprehensive information about each condition (symptoms, risk factors, prevention, treatment). When a prediction is made, the system automatically fetches and displays relevant medical information.
+
+**Q: How does the analytics dashboard work?**
+A: The dashboard calls /api/dashboard-stats which reads prediction_history.json, calculates statistics (total scans, risk distribution, condition breakdown), and returns real-time analytics. All data is computed from actual stored predictions, not hardcoded.
+
 ## 🏗️ Architecture
 
 ### CNN Model
@@ -92,14 +105,41 @@ A: Model accuracy depends on the training dataset quality and size. With proper 
 1. **Model Training** (`model/train_model.py`): CNN training script for 3-class classification
 2. **Model Utils** (`model/model_utils.py`): Model loading and prediction utilities
 3. **Image Validation** (`utils/image_validation.py`): Quality checks (blur, lighting, resolution)
-4. **Backend API** (`app.py`): Flask REST API with doctor location and consultation endpoints
-5. **Mobile App** (`mobile_app/`): Flutter mobile application
+4. **Backend API** (`app.py`): Flask REST API with 13+ endpoints
+5. **Data Storage**:
+   - `users.json`: User authentication data
+   - `prediction_history.json`: All scan results with timestamps
+   - `medical_knowledge.json`: Condition information database
+6. **Mobile App** (`mobile_app/`): Flutter mobile application
    - Image upload (camera/gallery)
    - Prediction display
    - GPS-based doctor location
    - Medical information
    - Medication guidance
    - Online consultation
+
+### API Endpoints
+
+**Authentication:**
+- `POST /api/login` - User login
+- `POST /api/register` - User registration
+- `POST /api/logout` - User logout
+
+**Prediction:**
+- `POST /api/predict` - Upload image and get CNN prediction (auto-stores in history)
+- `POST /api/validate` - Validate image quality before prediction
+
+**Data Retrieval:**
+- `GET /api/prediction-history` - Get user's complete scan history
+- `GET /api/prediction/<id>` - Get specific prediction details
+- `GET /api/analytics` - Get analytics summary for current user
+- `GET /api/dashboard-stats` - Get comprehensive dashboard statistics
+- `GET /api/condition-info/<condition>` - Get medical information about a condition
+
+**Healthcare:**
+- `GET /api/skin-info?condition=<condition>` - Get skin condition information
+- `GET /api/nearby-doctors?lat=<lat>&lng=<lng>` - Find nearby dermatologists
+- `GET /api/medication-guidance?condition=<condition>` - Get medication information
 
 ## 🚀 Quick Start
 
@@ -339,10 +379,12 @@ Validates image quality before prediction.
 
 ```
 SkinSaviour/
-├── app.py                          # Main Flask application (679 lines)
+├── app.py                          # Main Flask application (900+ lines, ENHANCED)
 ├── requirements.txt                # Python dependencies
 ├── run.bat / run.sh               # Quick start scripts
 ├── users.json                      # User database (auto-generated)
+├── prediction_history.json         # Scan results storage (NEW)
+├── medical_knowledge.json          # Condition information database (NEW)
 ├── 
 ├── model/                          # AI Model Components
 │   ├── train_model.py             # CNN training script (3-class)
@@ -357,8 +399,8 @@ SkinSaviour/
 ├── templates/                      # HTML Templates
 │   ├── login.html                 # Login page
 │   ├── register.html              # Registration page
-│   ├── dashboard.html             # User dashboard with analytics
-│   ├── index.html                 # Scan/upload page
+│   ├── dashboard.html             # User dashboard with real-time analytics (ENHANCED)
+│   ├── index.html                 # Scan/upload page with condition info display (ENHANCED)
 │   ├── history.html               # Scan history
 │   ├── info.html                  # Medical information
 │   ├── consultation.html          # Online consultation
@@ -372,8 +414,8 @@ SkinSaviour/
 │   │   ├── dashboard.css         # Dashboard styles
 │   │   └── ...
 │   └── js/
-│       ├── app.js                # Main application logic (431 lines)
-│       ├── dashboard.js          # Dashboard functionality
+│       ├── app.js                # Main logic with condition info display (500+ lines, ENHANCED)
+│       ├── dashboard.js          # Real-time analytics & visualization (500+ lines, ENHANCED)
 │       ├── login.js              # Login handling
 │       └── ...
 │
@@ -394,15 +436,19 @@ SkinSaviour/
 │   ├── PROJECT_STRUCTURE.md       # Detailed architecture
 │   ├── RUN_INSTRUCTIONS.md        # Setup guide
 │   ├── IMPLEMENTATION_SUMMARY.md  # Technical details
-│   └── PREDICTION_EXPLANATION.md  # Model explanation
+│   ├── PREDICTION_EXPLANATION.md  # Model explanation
+│   └── IMPLEMENTATION_COMPLETE.md # Latest features documentation (NEW)
 │
 └── .gitignore                      # Git ignore rules
 ```
 
 **Key Files:**
-- **app.py** (679 lines): Main Flask server with all routes and API endpoints
+- **app.py** (900+ lines): Flask server with 13+ API endpoints including prediction history and analytics
 - **model_utils.py** (183 lines): CNN model loading, preprocessing, and prediction logic
-- **app.js** (431 lines): Frontend JavaScript for image upload and result display
+- **app.js** (500+ lines): Frontend JavaScript with condition info integration
+- **dashboard.js** (500+ lines): Real-time analytics, charts, and data visualization
+- **prediction_history.json**: Stores all scan results with timestamps and metadata
+- **medical_knowledge.json**: Comprehensive medical information database
 
 ## 🔧 Configuration
 
@@ -435,7 +481,10 @@ See `mobile_app/README.md` for detailed setup instructions.
 ✅ **AI-Powered Detection**: CNN-based multi-class classification (3 classes)  
 ✅ **Image Quality Validation**: Blur detection, brightness check, resolution validation  
 ✅ **User Authentication**: Secure login/registration with password hashing  
-✅ **Dashboard Analytics**: Scan history, risk statistics, visual charts  
+✅ **Dashboard Analytics**: Real-time analytics with condition distribution charts (NEW)  
+✅ **Prediction History**: Automatic storage of all scan results with timestamps (NEW)  
+✅ **Medical Knowledge Base**: Comprehensive condition information with prevention tips (NEW)  
+✅ **Data Visualization**: Interactive charts and graphs for scan statistics (NEW)  
 ✅ **Responsive UI**: Modern design with drag-and-drop upload  
 ✅ **Session Management**: Secure user sessions with protected routes  
 ✅ **Real-time Processing**: Instant prediction with visual feedback  
@@ -444,13 +493,15 @@ See `mobile_app/README.md` for detailed setup instructions.
 ✅ **Risk Assessment**: High/Medium/Low risk categorization  
 ✅ **Confidence Scoring**: Percentage probabilities for each class  
 ✅ **Medical Recommendations**: Automated guidance based on results  
+✅ **Condition Information**: Automatic display of symptoms, prevention, treatment (NEW)  
 ✅ **GPS Doctor Finder**: Nearby dermatologist location (mobile app)  
 ✅ **Online Consultation**: Virtual consultation module  
 ✅ **Medication Guidance**: Informational medication database  
 ✅ **Condition Tracking**: Historical scan tracking and monitoring  
 
 ### Technical Features
-✅ **RESTful API**: Well-documented endpoints (`/api/predict`, `/api/validate`, `/api/login`)  
+✅ **RESTful API**: 13+ well-documented endpoints for predictions, analytics, and data retrieval (ENHANCED)  
+✅ **Data Storage**: JSON-based storage system (users, predictions, medical knowledge) (NEW)  
 ✅ **CORS Support**: Cross-origin resource sharing enabled  
 ✅ **File Upload Handling**: Secure file processing with validation  
 ✅ **Error Handling**: Comprehensive error messages and debugging  
@@ -473,7 +524,13 @@ User Input
     ↓
 [Post-processing] → Risk Assessment, Recommendations
     ↓
-[Response] → Display Results + Save to History
+[Storage] → Save to prediction_history.json (NEW)
+    ↓
+[Medical Info] → Fetch from medical_knowledge.json (NEW)
+    ↓
+[Response] → Display Results + Condition Info + Save to History
+    ↓
+[Dashboard] → Real-time Analytics from Stored Data (NEW)
 ```
 
 ## 🔐 Security Features
@@ -488,12 +545,22 @@ User Input
 ## 📝 Development Information
 
 ### Version History
+- **v3.0** (Jan 2026): Added prediction history storage, medical knowledge base, real-time analytics dashboard, and condition information display
 - **v2.0** (Jan 2026): Fixed undefined condition display bug, improved frontend-backend integration
 - **v1.0** (Jan 2026): Initial release with full features
 
+### Latest Enhancements (v3.0)
+- **Prediction History System**: Automatic storage of all scans with timestamps, user IDs, and metadata
+- **Medical Knowledge Base**: Comprehensive database with symptoms, prevention, treatment for each condition
+- **Real-time Analytics**: Dashboard calculates statistics from actual stored data (no hardcoded values)
+- **Data Visualization**: Interactive condition distribution charts with animated bars
+- **5 New API Endpoints**: `/api/prediction-history`, `/api/analytics`, `/api/condition-info/<condition>`, `/api/prediction/<id>`, `/api/dashboard-stats`
+- **Enhanced UI**: Recent scans cards, activity timeline, time-ago formatting
+- **Automatic Integration**: Condition info fetched and displayed after every prediction
+
 ### Git Repository
 - **GitHub**: [https://github.com/sit23cs209-ux/skin-saviour](https://github.com/sit23cs209-ux/skin-saviour)
-- **Commits**: 2+ commits with comprehensive change tracking
+- **Commits**: 3+ commits with comprehensive change tracking
 - **Branches**: main (production-ready)
 
 ### Contributors
@@ -501,6 +568,8 @@ Developed as an academic project demonstrating:
 - Deep Learning in Healthcare
 - Web Application Development
 - Full-stack Integration (Frontend + Backend + ML)
+- RESTful API Design with Data Storage
+- Real-time Data Analytics and Visualization
 - Medical AI Ethics and Responsible Development
 
 ### Future Enhancements

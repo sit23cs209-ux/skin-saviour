@@ -87,13 +87,21 @@
                         <div class="stat-label">Low Risk</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="moderate-risk-count">0</div>
-                        <div class="stat-label">Moderate Risk</div>
+                        <div class="stat-value" id="medium-risk-count">0</div>
+                        <div class="stat-label">Medium Risk</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="high-risk-count">0</div>
                         <div class="stat-label">High Risk</div>
                     </div>
+                </div>
+            </section>
+
+            <!-- Condition Distribution Chart -->
+            <section class="chart-section">
+                <h2 class="section-title">Condition Distribution</h2>
+                <div class="chart-container" id="condition-chart">
+                    <p class="no-data">Loading...</p>
                 </div>
             </section>
 
@@ -110,6 +118,16 @@
                         <button class="action-btn" onclick="document.getElementById('scan-card').click()">Scan Now</button>
                     </div>
                 </div>
+                <!-- Enhanced Recent Scans Container -->
+                <div id="recent-scans-container"></div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity-section">
+                <h2 class="section-title">Recent Activity</h2>
+                <ul id="recent-activity-list" class="activity-list">
+                    <li class="no-activity">Loading...</li>
+                </ul>
             </section>
 
             <!-- Tips Section -->

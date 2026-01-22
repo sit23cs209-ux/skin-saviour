@@ -1,0 +1,44 @@
+[
+  {
+    "prediction_id": "pred_1_20260122220317",
+    "user_id": "kaushi",
+    "timestamp": "2026-01-22T22:03:17.204428",
+    "image_filename": "cancer_image.jpeg",
+    "condition": "Normal / Non-Cancerous Skin",
+    "confidence": 66.62,
+    "risk_level": "Low",
+    "is_cancerous": false,
+    "probabilities": {
+      "normal": 66.62,
+      "pimples": 4.42,
+      "skin_cancer": 28.95
+    },
+    "metadata": {
+      "original_filename": "cancer image.jpeg",
+      "file_size": 0,
+      "validation_warnings": []
+    }
+  },
+  {
+    "prediction_id": "pred_2_20260122220500",
+    "user_id": "kaushi",
+    "timestamp": "2026-01-22T22:05:00.680049",
+    "image_filename": "chaaandd.jpeg",
+    "condition": "Normal / Non-Cancerous Skin",
+    "confidence": 60.43,
+    "risk_level": "Low",
+    "is_cancerous": false,
+    "probabilities": {
+      "normal": 60.43,
+      "pimples": 5.07,
+      "skin_cancer": 34.5
+    },
+    "metadata": {
+      "original_filename": "chaaandd.jpeg",
+      "file_size": 0,
+      "validation_warnings": [
+        "Image resolution (300x168) is below recommended minimum (224x224)"
+      ]
+    }
+  }
+]
