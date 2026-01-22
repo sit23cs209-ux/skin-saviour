@@ -172,17 +172,17 @@ async function analyzeImage() {
  */
 function displayResults(prediction) {
     const isCancerous = prediction.is_cancerous;
-    const cancerPercentage = prediction.cancer_percentage || prediction.confidence;
-    const nonCancerPercentage = prediction.non_cancer_percentage || (100 - cancerPercentage);
+    const cancerPercentage = prediction.probabilities?.skin_cancer || 0;
+    const nonCancerPercentage = (prediction.probabilities?.normal || 0) + (prediction.probabilities?.pimples || 0);
     const riskLevel = prediction.risk_level;
     const lesionDetected = prediction.lesion_detected !== undefined ? prediction.lesion_detected : true;
     const lesionConfidence = prediction.lesion_confidence || 100;
     
     // Check detection results
-    const isPimple = prediction.is_pimple || false;
+    const isPimple = prediction.is_pimples || false;
     const pimpleReason = prediction.pimple_reason || '';
-    const isClearSkin = prediction.is_clear_skin || false;
-    const rawProbability = prediction.raw_probability !== undefined ? (prediction.raw_probability * 100).toFixed(2) : null;
+    const isClearSkin = prediction.is_normal || false;
+    const rawProbability = prediction.raw_probabilities?.skin_cancer !== undefined ? (prediction.raw_probabilities.skin_cancer * 100).toFixed(2) : null;
     
     // Determine icon and styling based on ACTUAL result
     let icon = '✅';
@@ -203,7 +203,7 @@ function displayResults(prediction) {
         <div class="result-box ${resultClass}">
             <div class="result-title">
                 <span class="icon">${icon}</span>
-                <span>${prediction.message}</span>
+                <span>${prediction.condition || prediction.message || 'Result'}</span>
             </div>
             
             ${isPimple ? `
@@ -234,12 +234,12 @@ function displayResults(prediction) {
             
             <div class="percentage-display">
                 <div class="percentage-main">
-                    <div class="percentage-value cancer-percentage">${cancerPercentage}%</div>
+                    <div class="percentage-value cancer-percentage">${cancerPercentage.toFixed(2)}%</div>
                     <div class="percentage-label">Cancer Probability</div>
                 </div>
                 <div class="percentage-separator">vs</div>
                 <div class="percentage-main">
-                    <div class="percentage-value non-cancer-percentage">${nonCancerPercentage}%</div>
+                    <div class="percentage-value non-cancer-percentage">${nonCancerPercentage.toFixed(2)}%</div>
                     <div class="percentage-label">Non-Cancer Probability</div>
                 </div>
             </div>
@@ -249,10 +249,10 @@ function displayResults(prediction) {
             </div>
             
             <div class="prediction-details">
-                <p><strong>Analysis Result:</strong> Based on CNN model prediction, this image shows <strong>${cancerPercentage}%</strong> probability of being cancerous.</p>
-                ${prediction.raw_probability !== undefined ? `
+                <p><strong>Analysis Result:</strong> Based on CNN model prediction, this image shows <strong>${cancerPercentage.toFixed(2)}%</strong> probability of being cancerous.</p>
+                ${rawProbability !== null ? `
                 <p style="font-size: 0.9em; color: #666; margin-top: 8px;">
-                    <em>Model confidence: ${lesionConfidence}% | Raw prediction: ${(prediction.raw_probability * 100).toFixed(2)}%</em>
+                    <em>Model confidence: ${prediction.confidence}% | Class: ${prediction.predicted_class}</em>
                 </p>
                 ` : ''}
             </div>
@@ -290,10 +290,12 @@ function saveScanToHistory(prediction) {
         const scans = JSON.parse(localStorage.getItem('skinSaviourScans') || '[]');
         const stats = JSON.parse(localStorage.getItem('skinSaviourStats') || '{}');
         
+        const cancerPercentage = prediction.probabilities?.skin_cancer || 0;
+        
         // Add new scan
         scans.push({
             date: new Date().toISOString(),
-            cancerPercentage: prediction.cancer_percentage,
+            cancerPercentage: cancerPercentage,
             riskLevel: prediction.risk_level,
             isCancerous: prediction.is_cancerous
         });
