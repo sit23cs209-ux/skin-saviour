@@ -146,13 +146,25 @@ class SkinCancerDetector:
         predicted_class = self.class_names[class_index]
         confidence = float(probabilities[class_index])
         
-        # Determine condition name for display
+        # Determine condition name and risk level based on CNN prediction AND severity
         if predicted_class == 'skin_cancer':
             condition = 'Skin Cancer'
-            risk_level = 'High'
+            # Risk level based on confidence - higher confidence = more concerning
+            if confidence >= 0.75:
+                risk_level = 'High'
+            elif confidence >= 0.50:
+                risk_level = 'Medium'
+            else:
+                risk_level = 'Low'
         elif predicted_class == 'pimples':
             condition = 'Pimples / Acne'
-            risk_level = 'Medium'
+            # For pimples, assess severity based on confidence (indicates coverage/severity)
+            if confidence >= 0.80:
+                risk_level = 'Medium'  # Severe acne
+            elif confidence >= 0.60:
+                risk_level = 'Low'  # Moderate acne
+            else:
+                risk_level = 'Low'  # Mild acne
         else:  # normal
             condition = 'Normal / Non-Cancerous Skin'
             risk_level = 'Low'
